@@ -12,32 +12,40 @@ import java.util.logging.Logger;
  *
  * @author Mayara
  */
-public class TratarClientRunnable {
+public class TratarClientRunnable implements Runnable{
     private Socket cliente;
 
     public TratarClientRunnable(Socket cliente) {
         this.cliente = cliente;
     }
     
-    public void run(){
-        InputStream is;
-        OutputStream os;
-        try{
-            is = cliente.getInputStream();
-            DataInputStream dis;
-            dis = new DataInputStream(is);
-            int num, num2;
-            num = dis.readInt();
-            System.out.println(num);
-            os = cliente.getOutputStream();
-            DataOutputStream dos;
-            dos = new DataOutputStream(os);
-            if(num == 1)
-                dos.writeBoolean(true);
-            
-        }catch(IOException ex){
-            Logger.getLogger(TratarClientRunnable.class.getName());
-        }
+        @Override
+	public void run() {
+		InputStream is;
+                OutputStream os;
                 
-    }
+		try{
+			is = cliente.getInputStream();
+			DataInputStream dis;
+			dis = new DataInputStream(is);
+                        os = cliente.getOutputStream();
+                        DataOutputStream dos;
+                        dos = new DataOutputStream(os);
+			int num, num2;
+                        num = dis.readInt(); //comando para votar 1
+                        num2 = dis.readInt();
+                        if (num == 1){
+                            num2 = dis.readInt();
+                            dos.writeBoolean(true);
+                         }
+                        
+			System.out.println(num2); 
+			
+		}catch(IOException ex){
+
+			Logger.getLogger(TratarClientRunnable.class.getName());
+		}
+		
+		
+	}
 }
