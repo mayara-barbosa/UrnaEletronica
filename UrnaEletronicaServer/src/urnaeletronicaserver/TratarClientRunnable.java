@@ -24,6 +24,8 @@ public class TratarClientRunnable implements Runnable{
 		InputStream is;
                 OutputStream os;
                 
+            while(cliente.isClosed()== false){
+                                  
 		try{
 			is = cliente.getInputStream();
 			DataInputStream dis;
@@ -37,7 +39,7 @@ public class TratarClientRunnable implements Runnable{
                         if (num == 1){
                             num2 = dis.readInt();
                             dos.writeBoolean(true);
-                         }
+                        }
                         
 			System.out.println(num2); 
 			
@@ -45,7 +47,6 @@ public class TratarClientRunnable implements Runnable{
 
 			Logger.getLogger(TratarClientRunnable.class.getName());
 		}
-		
-		
-	}
+	   }
+    }
 }
