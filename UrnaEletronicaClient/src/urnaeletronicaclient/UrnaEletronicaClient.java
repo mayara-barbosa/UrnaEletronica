@@ -1,8 +1,10 @@
 package urnaeletronicaclient;
 
 import com.sun.org.apache.xalan.internal.xsltc.trax.OutputSettings;
+import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -22,10 +24,61 @@ public class UrnaEletronicaClient {
         Scanner sc;
         sc = new Scanner(System.in);
         
-        System.out.println("Digite 1 para votar: ");
-        numero = sc.nextInt();
-        //System.out.println("Numero candidato: ");
-        //numeroCandidato = sc.nextInt();
+        do {
+                System.out.println ("\n--- Menu --- ");
+                System.out.println ("\n1 - Votar");
+                System.out.println ("2 - Listar");
+                System.out.println ("3 - Encerrar votação");
+
+                System.out.print ("\nOpção: ");
+            int opcao = sc.nextInt();
+                
+                OutputStream osO;
+                osO = client.getOutputStream();
+                DataOutputStream dosO;
+                dosO = new DataOutputStream (osO);
+                dosO.writeInt(opcao);                      
+
+                switch (opcao) {
+                    case 1:                    
+                        System.out.print ("\nCódigo do candidato: ");
+                        numeroCandidato = sc.nextInt();
+
+                        OutputStream os;
+                        os = client.getOutputStream();
+                        DataOutputStream dos;
+                        dos = new DataOutputStream (os);
+                        dos.writeInt(numeroCandidato);        
+                        // Fim envio do codigo do candidato para o servidor        
+
+                        boolean resultado;
+                        InputStream is = client.getInputStream();
+                        DataInputStream dis;
+                        dis = new DataInputStream(is);
+                        resultado = dis.readBoolean();
+
+                        if (resultado) {
+                            System.out.print("Voto cadastrado.");
+                        }
+                        else {
+                            System.out.print("Candidato não encontrado");
+                        }
+
+                        break;
+
+                    case 2:
+                        break;
+                        
+                    case 3:
+
+                        
+                        System.out.println("\nVotação encerrada.");
+                        break;
+                }
+
+
+            } while (votacao == true);
+       
         
         OutputStream os;
         os = client.getOutputStream();
